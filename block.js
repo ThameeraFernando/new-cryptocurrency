@@ -4,11 +4,13 @@ const cryptoHash = require("./crypto-hash");
 //block class
 class Block {
   //constructor
-  constructor({ timestamp, lastHash, hash, data }) {
+  constructor({ timestamp, lastHash, hash, data, nonce, difficulty }) {
     this.timestamp = timestamp;
     this.lastHash = lastHash;
     this.hash = hash;
     this.data = data;
+    this.nonce = nonce;
+    this.difficulty = difficulty;
   }
   //return genesis block
   static genesis() {
@@ -16,13 +18,22 @@ class Block {
   }
   //mined block function
   static minedBlock({ lastBlock, data }) {
-    const timestamp = Date.now();
+    let hash, timestamp;
     const lastHash = lastBlock.hash;
-    const hash = cryptoHash(timestamp, lastBlock.hash, data);
+    const { difficulty } = lastBlock;
+    let nonce = 0;
+    do {
+      nonce++;
+      timestamp = Date.now();
+      hash = cryptoHash(timestamp, lastBlock.hash, data, difficulty, nonce);
+    } while (hash.substring(0, difficulty) !== "0".repeat(difficulty));
+
     return new this({
       timestamp,
       lastHash,
       data,
+      difficulty,
+      nonce,
       hash,
     });
   }
