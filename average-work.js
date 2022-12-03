@@ -12,7 +12,7 @@ for (let i = 0; i < 10000; i++) {
 
   //add a new block
   blockchain.addBlock({ data: `block ${i}` });
-
+  //   console.log(blockchain.chain[blockchain.chain.length - 1].hash);
   //get the next timestamp after adding a new block
   nextBlock = blockchain.chain[blockchain.chain.length - 1];
   nextTimestamp = nextBlock.timestamp;

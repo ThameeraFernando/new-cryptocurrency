@@ -18,6 +18,8 @@ class BlockChain {
     }
     for (let i = 1; i < chain.length; i++) {
       const block = chain[i];
+      const lastDifficulty = chain[i - 1].difficulty;
+
       const actualLastHash = chain[i - 1].hash;
       const { timestamp, lastHash, hash, data, nonce, difficulty } = block;
       if (lastHash !== actualLastHash) return false;
@@ -29,6 +31,7 @@ class BlockChain {
         difficulty
       );
       if (hash !== validatedHash) return false;
+      if (Maths.abs(lastDifficulty - difficulty) > 1) return false;
     }
     return true;
   }
