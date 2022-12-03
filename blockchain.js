@@ -31,7 +31,7 @@ class BlockChain {
         difficulty
       );
       if (hash !== validatedHash) return false;
-      if (Maths.abs(lastDifficulty - difficulty) > 1) return false;
+      if (Math.abs(lastDifficulty - difficulty) > 1) return false;
     }
     return true;
   }
