@@ -32,10 +32,6 @@ app.use(bodyParser.json());
 const blockchain = new BlockChain();
 const pubsub = new PubSub({ blockchain });
 
-setTimeout(() => {
-  pubsub.broadcastChain();
-}, 1000);
-
 app.get("/api/blocks", (req, res) => {
   res.json(blockchain.chain);
 });
@@ -52,5 +48,7 @@ app.post("/api/mine", (req, res) => {
 const PORT = PEER_PORT || DEFAULT_PORT;
 app.listen(PORT, () => {
   console.log(`server is listening at localhost:${PORT}`);
-  syncChains();
+  if (PORT !== DEFAULT_PORT) {
+    syncChains();
+  }
 });
